@@ -421,9 +421,35 @@ textarea {
 }
 
 .app.hardcore .header h1 {
-  color: #ff0000;
-  text-shadow: 0 0 10px rgba(255,0,0,0.5);
-  letter-spacing: 2px;
+  font-size: 2.5rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  background: linear-gradient(
+    90deg,
+    #8b0000 0%,
+    #ff0000 20%,
+    #ff6b6b 40%,
+    #ffd700 50%,
+    #ff6b6b 60%,
+    #ff0000 80%,
+    #8b0000 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metallic-glint 3s linear infinite;
+  text-shadow: none;
+  filter: drop-shadow(0 0 10px rgba(255,0,0,0.5)) drop-shadow(0 2px 4px rgba(0,0,0,0.8));
+}
+
+@keyframes metallic-glint {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
 }
 
 .app.hardcore .subtitle {
@@ -460,9 +486,24 @@ textarea {
 }
 
 .app.hardcore .form-section h2 {
-  color: #ff0000;
+  font-size: 1.75rem;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  background: linear-gradient(
+    90deg,
+    #cc0000 0%,
+    #ff0000 25%,
+    #ff8080 45%,
+    #ffd700 50%,
+    #ff8080 55%,
+    #ff0000 75%,
+    #cc0000 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: metallic-glint 4s linear infinite;
 }
 
 .app.hardcore input,
