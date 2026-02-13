@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { mockPatients, getAppointmentsByPatientId } from '../data/mockPatients'
+import { Button } from './ui/button'
+import { Card, CardContent } from './ui/card'
+import { Badge } from './ui/badge'
+import { Input } from './ui/input'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from './ui/table'
 import './Home.css'
 
 function Home() {
@@ -51,52 +56,55 @@ function Home() {
       {/* Header */}
       <header className="home-header">
         <div className="header-left">
-          <h1>⚕️ Spine & Wellness</h1>
-          <p>Patient Management System</p>
+          <h1 className="text-2xl font-bold text-gray-800">Spine & Wellness</h1>
+          <p className="text-sm text-gray-500">Patient Management System</p>
         </div>
         <div className="header-right">
-          <button className="btn-calendar" onClick={() => navigate('/calendar')}>
-            📅 Calendar
-          </button>
-          <button className="btn-new-patient" onClick={() => navigate('/intake')}>
+          <Button variant="outline" onClick={() => navigate('/calendar')}>
+            Calendar
+          </Button>
+          <Button onClick={() => navigate('/intake')}>
             + New Patient
-          </button>
+          </Button>
         </div>
       </header>
 
       {/* Stats */}
       <div className="stats-row">
-        <div className="stat-card">
-          <span className="stat-number">{mockPatients.length}</span>
-          <span className="stat-label">Total Patients</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-number">
-            {mockPatients.filter(p => {
-              const apt = getUpcomingAppointment(p.id)
-              return apt !== undefined
-            }).length}
-          </span>
-          <span className="stat-label">Upcoming Appointments</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-number">3</span>
-          <span className="stat-label">Providers</span>
-        </div>
+        <Card>
+          <CardContent className="p-5 text-center">
+            <span className="text-3xl font-bold text-blue-500 block">{mockPatients.length}</span>
+            <span className="text-xs text-gray-500 uppercase">Total Patients</span>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5 text-center">
+            <span className="text-3xl font-bold text-blue-500 block">
+              {mockPatients.filter(p => getUpcomingAppointment(p.id) !== undefined).length}
+            </span>
+            <span className="text-xs text-gray-500 uppercase">Upcoming Appointments</span>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-5 text-center">
+            <span className="text-3xl font-bold text-blue-500 block">3</span>
+            <span className="text-xs text-gray-500 uppercase">Providers</span>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Search and Filter */}
       <div className="search-bar">
         <div className="search-input-wrapper">
-          <span className="search-icon">🔍</span>
-          <input
+          <Input
             type="text"
             placeholder="Search patients by name, email, or condition..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="h-10"
           />
         </div>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+        <select className="sort-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
           <option value="name">Sort by Name</option>
           <option value="recent">Sort by Recent</option>
           <option value="condition">Sort by Condition</option>
@@ -104,79 +112,88 @@ function Home() {
       </div>
 
       {/* Patient List */}
-      <div className="patient-list">
-        <div className="list-header">
-          <span className="col-name">Patient</span>
-          <span className="col-condition">Condition</span>
-          <span className="col-contact">Contact</span>
-          <span className="col-next">Next Appointment</span>
-          <span className="col-actions">Actions</span>
-        </div>
-        {filteredPatients.map(patient => {
-          const upcoming = getUpcomingAppointment(patient.id)
-          return (
-            <div
-              key={patient.id}
-              className="patient-row"
-              onClick={() => navigate(`/patient/${patient.id}`)}
-            >
-              <div className="col-name">
-                <div className="patient-avatar-sm">
-                  {patient.firstName[0]}{patient.lastName[0]}
-                </div>
-                <div>
-                  <div className="patient-name">{patient.firstName} {patient.lastName}</div>
-                  <div className="patient-id">{patient.id}</div>
-                </div>
-              </div>
-              <div className="col-condition">
-                <span className="condition-tag">{patient.condition}</span>
-              </div>
-              <div className="col-contact">
-                <div>{patient.phone}</div>
-                <div className="email">{patient.email}</div>
-              </div>
-              <div className="col-next">
-                {upcoming ? (
-                  <span className="upcoming-badge">
-                    {formatDate(upcoming.date)} at {upcoming.time}
-                  </span>
-                ) : (
-                  <span className="no-appointment">No upcoming</span>
-                )}
-              </div>
-              <div className="col-actions">
-                <button
-                  className="btn-view"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    navigate(`/patient/${patient.id}`)
-                  }}
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Patient</TableHead>
+              <TableHead>Condition</TableHead>
+              <TableHead className="hidden md:table-cell">Contact</TableHead>
+              <TableHead>Next Appointment</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredPatients.map(patient => {
+              const upcoming = getUpcomingAppointment(patient.id)
+              return (
+                <TableRow
+                  key={patient.id}
+                  className="cursor-pointer"
+                  onClick={() => navigate(`/patient/${patient.id}`)}
                 >
-                  View
-                </button>
-              </div>
-            </div>
-          )
-        })}
-      </div>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <div className="patient-avatar-sm">
+                        {patient.firstName[0]}{patient.lastName[0]}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-gray-800">{patient.firstName} {patient.lastName}</div>
+                        <div className="text-xs text-gray-400">{patient.id}</div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="info">{patient.condition}</Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    <div className="text-sm">{patient.phone}</div>
+                    <div className="text-xs text-gray-400">{patient.email}</div>
+                  </TableCell>
+                  <TableCell>
+                    {upcoming ? (
+                      <Badge variant="success">
+                        {formatDate(upcoming.date)} at {upcoming.time}
+                      </Badge>
+                    ) : (
+                      <span className="text-gray-400 text-sm">No upcoming</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigate(`/patient/${patient.id}`)
+                      }}
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
+      </Card>
 
       {filteredPatients.length === 0 && (
-        <div className="no-results">
-          <p>No patients found matching "{searchTerm}"</p>
+        <div className="text-center py-12 text-gray-400">
+          <p>No patients found matching &quot;{searchTerm}&quot;</p>
         </div>
       )}
 
       {/* Quick Links */}
       <div className="quick-links">
-        <h3>Quick Actions</h3>
-        <div className="links-grid">
-          <button onClick={() => navigate('/intake')}>
-            📝 New Patient Intake
-          </button>
-          <button onClick={() => navigate('/calendar')}>
-            📅 View Calendar
-          </button>
+        <h3 className="text-sm font-semibold text-gray-700 mb-3">Quick Actions</h3>
+        <div className="flex gap-3 flex-wrap">
+          <Button variant="outline" onClick={() => navigate('/intake')}>
+            New Patient Intake
+          </Button>
+          <Button variant="outline" onClick={() => navigate('/calendar')}>
+            View Calendar
+          </Button>
         </div>
       </div>
     </div>

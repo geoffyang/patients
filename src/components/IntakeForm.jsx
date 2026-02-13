@@ -1,23 +1,25 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Button } from './ui/button'
+import { Card } from './ui/card'
 import './IntakeForm.css'
 
 const themes = ['professional', 'hardcore', 'turtles', 'soft']
 
 const ICONS = {
-  turtle: '🐢',
-  fire: '🔥',
-  medical: '⚕️',
-  flower: '🌼',
-  cherry: '🌸',
-  skull: '💀',
-  warning: '⚠️',
-  muscle: '💪',
-  heart: '💕',
-  herb: '🌿',
-  check: '✓',
-  left: '←',
-  right: '→'
+  turtle: '\u{1F422}',
+  fire: '\u{1F525}',
+  medical: '\u2695\uFE0F',
+  flower: '\u{1F33C}',
+  cherry: '\u{1F338}',
+  skull: '\u{1F480}',
+  warning: '\u26A0\uFE0F',
+  muscle: '\u{1F4AA}',
+  heart: '\u{1F495}',
+  herb: '\u{1F33F}',
+  check: '\u2713',
+  left: '\u2190',
+  right: '\u2192'
 }
 
 const initialFormData = {
@@ -176,7 +178,7 @@ function IntakeForm() {
   if (submitted) {
     return (
       <div className={`intake-app ${theme}`}>
-        <div className="success-container">
+        <Card className="success-container">
           <div className="success-icon">
             {theme === 'turtles' ? ICONS.turtle : theme === 'hardcore' ? ICONS.fire : theme === 'soft' ? ICONS.cherry : ICONS.check}
           </div>
@@ -201,16 +203,16 @@ function IntakeForm() {
               Back to Dashboard
             </button>
           </div>
-        </div>
+        </Card>
       </div>
     )
   }
 
   return (
     <div className={`intake-app ${theme}`}>
-      <button className="back-home-btn" onClick={() => navigate('/')}>
-        ← Back to Dashboard
-      </button>
+      <Button variant="outline" className="back-home-btn" onClick={() => navigate('/')}>
+        &larr; Back to Dashboard
+      </Button>
 
       <div className="theme-switcher">
         <span>Theme:</span>

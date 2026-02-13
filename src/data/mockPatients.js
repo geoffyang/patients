@@ -44,7 +44,7 @@ const generateAppointments = (patientId, startDate, count) => {
     const aptDate = new Date(date)
     let status
     if (aptDate < today) {
-      status = Math.random() > 0.1 ? 'completed' : 'cancelled'
+      status = Math.random() > 0.1 ? 'completed' : 'missed'
     } else {
       status = Math.random() > 0.15 ? 'scheduled' : 'cancelled'
     }
