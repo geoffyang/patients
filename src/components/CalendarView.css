@@ -1,0 +1,549 @@
+.calendar-view {
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.cal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.cal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-today {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-today:hover {
+  background: #f0f0f0;
+}
+
+.nav-buttons {
+  display: flex;
+}
+
+.nav-buttons button {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: all 0.2s;
+}
+
+.nav-buttons button:first-child {
+  border-radius: 4px 0 0 4px;
+}
+
+.nav-buttons button:last-child {
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+}
+
+.nav-buttons button:hover {
+  background: #f0f0f0;
+}
+
+.cal-header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #3c4043;
+  margin: 0;
+}
+
+.cal-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-shortcuts {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.btn-shortcuts:hover {
+  background: #f0f0f0;
+}
+
+.view-switcher {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.view-switcher button {
+  background: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  border-right: 1px solid #ddd;
+}
+
+.view-switcher button:last-child {
+  border-right: none;
+}
+
+.view-switcher button:hover {
+  background: #f0f0f0;
+}
+
+.view-switcher button.active {
+  background: #e8f0fe;
+  color: #1a73e8;
+}
+
+/* Calendar Content */
+.cal-content {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Day View */
+.day-view {
+  padding: 0 1rem;
+}
+
+.time-grid {
+  border-left: 1px solid #e0e0e0;
+  margin-left: 60px;
+}
+
+.time-slot {
+  display: flex;
+  min-height: 60px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.time-label {
+  width: 60px;
+  margin-left: -60px;
+  padding-right: 8px;
+  text-align: right;
+  font-size: 0.75rem;
+  color: #70757a;
+  position: relative;
+  top: -8px;
+}
+
+.time-content {
+  flex: 1;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointment-block {
+  background: #e8f0fe;
+  border-left: 4px solid #1a73e8;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.appointment-block:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+}
+
+.appointment-block .apt-time {
+  font-size: 0.8rem;
+  color: #5f6368;
+}
+
+.appointment-block .apt-patient {
+  font-weight: 500;
+  color: #202124;
+}
+
+.appointment-block .apt-provider {
+  font-size: 0.8rem;
+  color: #5f6368;
+}
+
+/* Week View */
+.week-view {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px);
+}
+
+.week-header {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.time-gutter {
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.week-day-header {
+  flex: 1;
+  text-align: center;
+  padding: 0.75rem 0;
+  border-left: 1px solid #e0e0e0;
+}
+
+.week-day-header .day-name {
+  display: block;
+  font-size: 0.7rem;
+  color: #70757a;
+  text-transform: uppercase;
+}
+
+.week-day-header .day-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-size: 1rem;
+  color: #3c4043;
+}
+
+.week-day-header.today .day-name {
+  color: #1a73e8;
+}
+
+.today-circle {
+  background: #1a73e8;
+  color: white !important;
+  border-radius: 50%;
+}
+
+.week-grid {
+  display: flex;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.time-column {
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.time-column .time-label {
+  height: 60px;
+  padding-right: 8px;
+  text-align: right;
+  font-size: 0.7rem;
+  color: #70757a;
+  position: relative;
+  top: -8px;
+  margin-left: 0;
+  width: auto;
+}
+
+.day-column {
+  flex: 1;
+  border-left: 1px solid #e0e0e0;
+}
+
+.hour-cell {
+  height: 60px;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 2px;
+  position: relative;
+}
+
+.week-appointment {
+  font-size: 0.7rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+  transition: all 0.2s;
+}
+
+.week-appointment:hover {
+  transform: scale(1.05);
+  z-index: 5;
+  position: relative;
+}
+
+/* Month View */
+.month-view {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 120px);
+}
+
+.month-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.month-day-header {
+  text-align: center;
+  padding: 0.75rem;
+  font-size: 0.7rem;
+  color: #70757a;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  flex: 1;
+  overflow-y: auto;
+}
+
+.month-cell {
+  min-height: 100px;
+  border-right: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.month-cell:hover {
+  background: #f8f9fa;
+}
+
+.month-cell.other-month {
+  background: #f8f9fa;
+}
+
+.month-cell.other-month .month-date {
+  color: #b0b0b0;
+}
+
+.month-date {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 0.85rem;
+  color: #3c4043;
+  margin-bottom: 4px;
+}
+
+.month-cell.today {
+  background: #e8f0fe;
+}
+
+.month-appointments {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.month-apt {
+  font-size: 0.7rem;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s;
+}
+
+.month-apt:hover {
+  transform: scale(1.02);
+}
+
+.more-appointments {
+  font-size: 0.7rem;
+  color: #70757a;
+  padding: 2px 4px;
+}
+
+/* Legend */
+.cal-legend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #e0e0e0;
+  background: #f8f9fa;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #5f6368;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+/* Shortcuts Modal */
+.shortcuts-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.shortcuts-modal {
+  background: white;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.shortcuts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.shortcuts-header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.shortcuts-header button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #5f6368;
+}
+
+.shortcuts-content {
+  padding: 1.5rem;
+}
+
+.shortcut-group {
+  margin-bottom: 1.5rem;
+}
+
+.shortcut-group:last-child {
+  margin-bottom: 0;
+}
+
+.shortcut-group h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #70757a;
+  margin: 0 0 0.75rem 0;
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.shortcut-item kbd {
+  background: #f1f3f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.85rem;
+  font-family: monospace;
+  min-width: 24px;
+  text-align: center;
+}
+
+.shortcut-item span {
+  color: #3c4043;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .cal-header h1 {
+    font-size: 1.2rem;
+  }
+
+  .week-view {
+    height: calc(100vh - 180px);
+  }
+
+  .month-view {
+    height: calc(100vh - 180px);
+  }
+
+  .month-cell {
+    min-height: 80px;
+  }
+
+  .month-apt {
+    font-size: 0.6rem;
+  }
+
+  .week-appointment {
+    font-size: 0.6rem;
+  }
+
+  .time-column .time-label,
+  .time-label {
+    font-size: 0.65rem;
+  }
+
+  .cal-legend {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
