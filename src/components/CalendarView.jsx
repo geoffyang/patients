@@ -179,8 +179,103 @@ function CalendarView() {
     return colors[status] || '#7f8c8d'
   }
 
+  // Generate mini month data for year view sidebar
+  const getMiniMonthDates = (year, month) => {
+    const dates = []
+    const firstDay = new Date(year, month, 1)
+    const lastDay = new Date(year, month + 1, 0)
+
+    // Start from the Sunday of the week containing the 1st
+    const start = new Date(firstDay)
+    start.setDate(start.getDate() - start.getDay())
+
+    // Generate 6 weeks of dates
+    for (let i = 0; i < 42; i++) {
+      const date = new Date(start)
+      date.setDate(start.getDate() + i)
+      dates.push(date)
+    }
+    return dates
+  }
+
+  const handleMiniMonthClick = (year, month) => {
+    const newDate = new Date(year, month, 1)
+    setCurrentDate(newDate)
+  }
+
+  const handleMiniDayClick = (date) => {
+    setCurrentDate(date)
+    setSelectedDate(date)
+    setView('day')
+  }
+
+  // Get the year to display in sidebar (centered around current date)
+  const sidebarYear = currentDate.getFullYear()
+  const months = Array.from({ length: 12 }, (_, i) => i)
+
   return (
     <div className="calendar-view">
+      {/* Sidebar with Year View */}
+      <aside className="cal-sidebar">
+        <div className="sidebar-header">
+          <button
+            className="year-nav-btn"
+            onClick={() => setCurrentDate(new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1))}
+          >
+            ‹
+          </button>
+          <span className="sidebar-year">{sidebarYear}</span>
+          <button
+            className="year-nav-btn"
+            onClick={() => setCurrentDate(new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), 1))}
+          >
+            ›
+          </button>
+        </div>
+        <div className="mini-months-container">
+          {months.map(month => {
+            const miniDates = getMiniMonthDates(sidebarYear, month)
+            const monthName = new Date(sidebarYear, month, 1).toLocaleDateString('en-US', { month: 'short' })
+            const isCurrentViewMonth = currentDate.getMonth() === month && currentDate.getFullYear() === sidebarYear
+
+            return (
+              <div
+                key={month}
+                className={`mini-month ${isCurrentViewMonth ? 'active' : ''}`}
+                onClick={() => handleMiniMonthClick(sidebarYear, month)}
+              >
+                <div className="mini-month-header">{monthName}</div>
+                <div className="mini-month-grid">
+                  {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, i) => (
+                    <div key={i} className="mini-day-header">{day}</div>
+                  ))}
+                  {miniDates.map((date, i) => {
+                    const isInMonth = date.getMonth() === month
+                    const isTodayDate = isToday(date)
+                    const hasAppts = getAppointmentsForDate(date).length > 0
+
+                    return (
+                      <div
+                        key={i}
+                        className={`mini-day ${!isInMonth ? 'other-month' : ''} ${isTodayDate ? 'today' : ''} ${hasAppts ? 'has-appointments' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          if (isInMonth) handleMiniDayClick(date)
+                        }}
+                      >
+                        {isInMonth ? date.getDate() : ''}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </aside>
+
+      {/* Main Calendar Area */}
+      <div className="cal-main">
       {/* Header */}
       <header className="cal-header">
         <div className="cal-header-left">
@@ -431,6 +526,7 @@ function CalendarView() {
           Cancelled
         </div>
       </div>
+      </div>{/* End cal-main */}
     </div>
   )
 }

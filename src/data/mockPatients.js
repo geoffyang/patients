@@ -15,20 +15,40 @@ const services = [
   { code: 'ACUP', name: 'Acupuncture Session', price: 70 },
 ]
 
-const conditions = [
-  'Lower Back Pain', 'Neck Pain', 'Sciatica', 'Herniated Disc',
-  'Whiplash', 'Scoliosis', 'Headaches/Migraines', 'Shoulder Pain',
-  'Hip Pain', 'Sports Injury', 'Carpal Tunnel', 'TMJ Disorder'
-]
+const generateNote = () => {
+  const notes = [
+    'Patient reports improvement in range of motion.',
+    'Adjusted T4-T7. Patient tolerated well.',
+    'Continued maintenance care. No new complaints.',
+    'Patient reports 50% reduction in pain.',
+    'Applied ice therapy post-adjustment.',
+    'Recommended home exercises for core strengthening.',
+    'Patient to return in 2 weeks for follow-up.',
+    'Muscle tension noted in trapezius region.',
+    'Good progress. Reducing visit frequency.',
+    'Discussed ergonomic workplace modifications.'
+  ]
+  return notes[Math.floor(Math.random() * notes.length)]
+}
 
+// Generate appointments centered around Feb 2026
 const generateAppointments = (patientId, startDate, count) => {
   const appointments = []
-  const statuses = ['completed', 'completed', 'completed', 'scheduled', 'cancelled']
+  const today = new Date('2026-02-12')
 
+  // Start from the patient's start date
   let date = new Date(startDate)
 
   for (let i = 0; i < count; i++) {
-    const status = i < count - 2 ? 'completed' : statuses[Math.floor(Math.random() * statuses.length)]
+    // Determine status based on date relative to today
+    const aptDate = new Date(date)
+    let status
+    if (aptDate < today) {
+      status = Math.random() > 0.1 ? 'completed' : 'cancelled'
+    } else {
+      status = Math.random() > 0.15 ? 'scheduled' : 'cancelled'
+    }
+
     const hour = 8 + Math.floor(Math.random() * 9) // 8am to 5pm
     const minute = Math.random() > 0.5 ? 0 : 30
 
@@ -57,22 +77,6 @@ const generateAppointments = (patientId, startDate, count) => {
   return appointments
 }
 
-const generateNote = () => {
-  const notes = [
-    'Patient reports improvement in range of motion.',
-    'Adjusted T4-T7. Patient tolerated well.',
-    'Continued maintenance care. No new complaints.',
-    'Patient reports 50% reduction in pain.',
-    'Applied ice therapy post-adjustment.',
-    'Recommended home exercises for core strengthening.',
-    'Patient to return in 2 weeks for follow-up.',
-    'Muscle tension noted in trapezius region.',
-    'Good progress. Reducing visit frequency.',
-    'Discussed ergonomic workplace modifications.'
-  ]
-  return notes[Math.floor(Math.random() * notes.length)]
-}
-
 export const mockPatients = [
   {
     id: 'P001',
@@ -90,7 +94,7 @@ export const mockPatients = [
     condition: 'Lower Back Pain',
     insuranceProvider: 'Blue Cross',
     insuranceId: 'BC-789456123',
-    startDate: '2024-01-10'
+    startDate: '2025-11-10'
   },
   {
     id: 'P002',
@@ -108,7 +112,7 @@ export const mockPatients = [
     condition: 'Neck Pain',
     insuranceProvider: 'Aetna',
     insuranceId: 'AET-456789123',
-    startDate: '2024-02-05'
+    startDate: '2025-12-05'
   },
   {
     id: 'P003',
@@ -126,7 +130,7 @@ export const mockPatients = [
     condition: 'Sciatica',
     insuranceProvider: 'United Health',
     insuranceId: 'UH-321654987',
-    startDate: '2023-11-20'
+    startDate: '2025-10-20'
   },
   {
     id: 'P004',
@@ -144,7 +148,7 @@ export const mockPatients = [
     condition: 'Sports Injury',
     insuranceProvider: 'Cigna',
     insuranceId: 'CIG-147258369',
-    startDate: '2024-03-01'
+    startDate: '2026-01-05'
   },
   {
     id: 'P005',
@@ -162,7 +166,7 @@ export const mockPatients = [
     condition: 'Herniated Disc',
     insuranceProvider: 'Blue Cross',
     insuranceId: 'BC-963852741',
-    startDate: '2023-08-15'
+    startDate: '2025-09-15'
   },
   {
     id: 'P006',
@@ -180,7 +184,7 @@ export const mockPatients = [
     condition: 'Headaches/Migraines',
     insuranceProvider: 'Humana',
     insuranceId: 'HUM-159753486',
-    startDate: '2024-01-25'
+    startDate: '2025-12-25'
   },
   {
     id: 'P007',
@@ -198,7 +202,7 @@ export const mockPatients = [
     condition: 'Whiplash',
     insuranceProvider: 'Aetna',
     insuranceId: 'AET-753951852',
-    startDate: '2024-02-18'
+    startDate: '2026-01-18'
   },
   {
     id: 'P008',
@@ -216,7 +220,7 @@ export const mockPatients = [
     condition: 'Shoulder Pain',
     insuranceProvider: 'United Health',
     insuranceId: 'UH-852456789',
-    startDate: '2023-12-10'
+    startDate: '2025-11-10'
   },
   {
     id: 'P009',
@@ -234,7 +238,7 @@ export const mockPatients = [
     condition: 'Lower Back Pain',
     insuranceProvider: 'Cigna',
     insuranceId: 'CIG-951753842',
-    startDate: '2023-10-05'
+    startDate: '2025-10-05'
   },
   {
     id: 'P010',
@@ -252,7 +256,7 @@ export const mockPatients = [
     condition: 'Scoliosis',
     insuranceProvider: 'Blue Cross',
     insuranceId: 'BC-357159486',
-    startDate: '2023-09-18'
+    startDate: '2025-09-18'
   },
   {
     id: 'P011',
@@ -270,7 +274,7 @@ export const mockPatients = [
     condition: 'Hip Pain',
     insuranceProvider: 'Humana',
     insuranceId: 'HUM-258369147',
-    startDate: '2024-01-08'
+    startDate: '2025-12-08'
   },
   {
     id: 'P012',
@@ -288,7 +292,7 @@ export const mockPatients = [
     condition: 'Carpal Tunnel',
     insuranceProvider: 'Aetna',
     insuranceId: 'AET-147963258',
-    startDate: '2024-02-28'
+    startDate: '2026-01-28'
   },
   {
     id: 'P013',
@@ -306,7 +310,7 @@ export const mockPatients = [
     condition: 'Neck Pain',
     insuranceProvider: 'United Health',
     insuranceId: 'UH-369258147',
-    startDate: '2023-11-12'
+    startDate: '2025-11-12'
   },
   {
     id: 'P014',
@@ -324,7 +328,7 @@ export const mockPatients = [
     condition: 'TMJ Disorder',
     insuranceProvider: 'Cigna',
     insuranceId: 'CIG-258147369',
-    startDate: '2024-03-10'
+    startDate: '2026-02-01'
   },
   {
     id: 'P015',
@@ -342,7 +346,7 @@ export const mockPatients = [
     condition: 'Sciatica',
     insuranceProvider: 'Blue Cross',
     insuranceId: 'BC-159357486',
-    startDate: '2023-12-22'
+    startDate: '2025-12-22'
   },
   {
     id: 'P016',
@@ -360,7 +364,7 @@ export const mockPatients = [
     condition: 'Sports Injury',
     insuranceProvider: 'Humana',
     insuranceId: 'HUM-486159753',
-    startDate: '2024-01-30'
+    startDate: '2025-12-30'
   },
   {
     id: 'P017',
@@ -378,7 +382,7 @@ export const mockPatients = [
     condition: 'Lower Back Pain',
     insuranceProvider: 'Aetna',
     insuranceId: 'AET-753486159',
-    startDate: '2023-10-28'
+    startDate: '2025-10-28'
   },
   {
     id: 'P018',
@@ -396,7 +400,7 @@ export const mockPatients = [
     condition: 'Herniated Disc',
     insuranceProvider: 'United Health',
     insuranceId: 'UH-159486753',
-    startDate: '2023-09-05'
+    startDate: '2025-09-05'
   },
   {
     id: 'P019',
@@ -414,7 +418,7 @@ export const mockPatients = [
     condition: 'Whiplash',
     insuranceProvider: 'Cigna',
     insuranceId: 'CIG-486753159',
-    startDate: '2024-02-12'
+    startDate: '2026-01-12'
   },
   {
     id: 'P020',
@@ -432,13 +436,13 @@ export const mockPatients = [
     condition: 'Shoulder Pain',
     insuranceProvider: 'Blue Cross',
     insuranceId: 'BC-753159486',
-    startDate: '2024-03-05'
+    startDate: '2026-02-05'
   }
 ]
 
 // Generate appointments for each patient
 export const mockAppointments = mockPatients.flatMap(patient => {
-  const appointmentCount = 3 + Math.floor(Math.random() * 8) // 3-10 appointments each
+  const appointmentCount = 4 + Math.floor(Math.random() * 6) // 4-9 appointments each
   return generateAppointments(patient.id, patient.startDate, appointmentCount)
 })
 
